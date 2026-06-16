@@ -1,0 +1,22 @@
+services:
+  compossador:
+    image: ghcr.io/dan-dr/compossador:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      DISCOVERY_INTERVAL: 30
+    networks:
+      default:
+        aliases:
+          - ddyo
+
+  app:
+    image: hashicorp/http-echo
+    command: -text="app reached through ddyo" -listen=:3000
+    ports:
+      - "127.0.0.1:3131:3000"
+
+  tester:
+    image: curlimages/curl
+    command: ["sleep", "infinity"]
