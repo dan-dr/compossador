@@ -64,7 +64,7 @@ start_route() {
     rm -f "$pidfile"
   fi
 
-  log "ddyo:$listen_port -> $service:$target_port"
+  log "server:$listen_port -> $service:$target_port"
 
   socat \
     "TCP-LISTEN:$listen_port,bind=0.0.0.0,fork,reuseaddr" \

@@ -9,11 +9,11 @@ services:
     networks:
       default:
         aliases:
-          - ddyo
+          - server
 
   app:
     image: hashicorp/http-echo
-    command: -text="app reached through ddyo" -listen=:3000
+    command: -text="app reached through server" -listen=:3000
     ports:
       - "127.0.0.1:3131:3000"
 

@@ -2,7 +2,7 @@
 
 Compossador is a small Docker Compose sidecar that exposes a stable in-stack hostname for services that publish ports.
 
-It is intended for Compose stacks where containers need to call the same ports that are published on the host, but without leaving the Docker network. For example, if a service publishes `127.0.0.1:3131:3000`, another container can call `ddyo:3131` and Compossador forwards that connection to `service-name:3000`.
+It is intended for Compose stacks where containers need to call the same ports that are published on the host, but without leaving the Docker network. For example, if a service publishes `127.0.0.1:3131:3000`, another container can call `server:3131` and Compossador forwards that connection to `service-name:3000`.
 
 ## How It Works
 
@@ -14,7 +14,7 @@ It:
 - lists running containers in that project
 - reads Docker port metadata for published TCP ports
 - starts one `socat` TCP listener for each discovered mapping
-- forwards `ddyo:<published-port>` to `<compose-service>:<container-port>`
+- forwards `server:<published-port>` to `<compose-service>:<container-port>`
 - polls periodically for service additions, removals, recreation, and port changes
 
 It does not require labels on application services.
@@ -31,7 +31,7 @@ services:
     networks:
       default:
         aliases:
-          - ddyo
+          - server
 
   app:
     image: hashicorp/http-echo
@@ -43,7 +43,7 @@ services:
 From another service on the same Compose network:
 
 ```sh
-curl http://ddyo:3131
+curl http://server:3131
 ```
 
 That forwards to:
