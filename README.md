@@ -4,6 +4,8 @@ Compossador is a small Docker Compose sidecar that exposes a stable in-stack hos
 
 It is intended for Compose stacks where containers need to call the same ports that are published on the host, but without leaving the Docker network. For example, if a service publishes `127.0.0.1:3131:3000`, another container can call `server:3131` and Compossador forwards that connection to `service-name:3000`.
 
+This is useful for private-networked deployments, including stacks reached through tools like [Tailscale](https://tailscale.com/), where services may publish ports for host or tailnet access while other containers still need stable in-network URLs for those same published entry points.
+
 ## How It Works
 
 Compossador runs inside the same Compose project as the services it routes to.
@@ -76,6 +78,10 @@ environment:
 - The sidecar excludes itself automatically by Compose service label.
 - Service names are resolved through Docker's embedded DNS on the Compose network.
 - If a service is scaled to multiple containers, Docker DNS behavior determines which backend is used.
+
+## Used In
+
+- [dan-dr/stremio-stack](https://github.com/dan-dr/stremio-stack)
 
 ## Security
 
